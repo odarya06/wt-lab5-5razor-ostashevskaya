@@ -60,4 +60,4 @@ https://github.com/odarya06/wt-lab5-5razor-ostashevskaya
 
 ## Опубликованное приложение
 
-Render: _ссылка будет добавлена после публикации_
+Render: https://wt-lab5-5razor-ostashevskaya.onrender.com
