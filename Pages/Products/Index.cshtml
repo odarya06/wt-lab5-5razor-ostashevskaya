@@ -1,0 +1,112 @@
+@page
+@model wt_lab5_5razor_ostashevskaya.Pages.Products.IndexModel
+@{
+    ViewData["Title"] = "Каталог товаров";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <h1 class="h2 fw-bold mb-1">Каталог товаров</h1>
+        <p class="text-muted mb-0">
+            Позиций: <strong>@Model.Products.Count</strong> ·
+            стоимость запасов: <strong>@Model.TotalValue.ToByn()</strong>
+        </p>
+    </div>
+    <a class="btn btn-primary" asp-page="/Products/Create">+ Добавить товар</a>
+</div>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+}
+
+@if (Model.Products.Count == 0)
+{
+    <div class="detail-card p-5 text-center">
+        <div class="display-6 mb-2">📦</div>
+        <h2 class="h5">Каталог пуст</h2>
+        <p class="text-muted">Добавьте первый товар, чтобы начать вести складской учёт.</p>
+        <a class="btn btn-primary" asp-page="/Products/Create">Добавить товар</a>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var product in Model.Products)
+        {
+            <div class="col-12 col-md-6 col-lg-4">
+                <article class="product-card h-100 p-4 d-flex flex-column">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <span class="category-icon" aria-hidden="true">@DisplayHelper.CategoryIcon(product.Category)</span>
+                        <span class="badge rounded-pill @DisplayHelper.StatusBadgeClass(product)">
+                            @DisplayHelper.StatusText(product)
+                        </span>
+                    </div>
+                    <h2 class="h5 fw-semibold mb-1">@product.Name</h2>
+                    <div class="small text-muted mb-3">
+                        Артикул: @product.Sku · @product.Category
+                    </div>
+                    <p class="text-muted small flex-grow-1">@product.Description</p>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <div class="price fs-5">@product.Price.ToByn()</div>
+                            <div class="small text-muted">Остаток: @product.Quantity шт.</div>
+                        </div>
+                        <span class="badge bg-light text-dark border">ID: @product.Id</span>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <a class="btn btn-sm btn-outline-primary flex-grow-1"
+                           asp-page="/Products/Details" asp-route-id="@product.Id">Подробнее</a>
+                        <a class="btn btn-sm btn-outline-secondary"
+                           asp-page="/Products/Edit" asp-route-id="@product.Id">Изменить</a>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+
+    <div class="table-card mt-5">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Наименование</th>
+                        <th>Категория</th>
+                        <th class="text-end">Цена</th>
+                        <th class="text-end">Остаток</th>
+                        <th>Статус</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.Products)
+                    {
+                        <tr>
+                            <td class="text-muted">@product.Id</td>
+                            <td>
+                                <div class="fw-semibold">@product.Name</div>
+                                <div class="small text-muted">@product.Sku</div>
+                            </td>
+                            <td>@product.Category</td>
+                            <td class="text-end fw-semibold">@product.Price.ToByn()</td>
+                            <td class="text-end">@product.Quantity шт.</td>
+                            <td>
+                                <span class="badge rounded-pill @DisplayHelper.StatusBadgeClass(product)">
+                                    @DisplayHelper.StatusText(product)
+                                </span>
+                            </td>
+                            <td class="text-end">
+                                <a class="btn btn-sm btn-outline-primary"
+                                   asp-page="/Products/Details" asp-route-id="@product.Id">Детали</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

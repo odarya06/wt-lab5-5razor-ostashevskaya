@@ -1,0 +1,52 @@
+@page
+@model wt_lab5_5razor_ostashevskaya.Pages.Products.DeleteModel
+@{
+    ViewData["Title"] = "Удаление товара";
+    var product = Model.Product!;
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a asp-page="/Index">Главная</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Products/Index">Товары</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Удаление</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-8 col-xl-7">
+        <div class="detail-card p-4 p-md-5">
+            <h1 class="h3 fw-bold mb-1">Удалить товар?</h1>
+            <p class="text-muted mb-4">Действие нельзя отменить: позиция будет удалена из каталога.</p>
+
+            <div class="bg-light rounded-4 p-4 mb-4">
+                <div class="d-flex justify-content-between align-items-start gap-3">
+                    <div>
+                        <div class="h5 fw-semibold mb-1">@product.Name</div>
+                        <div class="small text-muted">@product.Sku · @product.Category · @product.Supplier</div>
+                    </div>
+                    <span class="badge rounded-pill @DisplayHelper.StatusBadgeClass(product)">
+                        @DisplayHelper.StatusText(product)
+                    </span>
+                </div>
+                <div class="d-flex justify-content-between mt-3 pt-3 border-top">
+                    <span class="text-muted">Цена</span>
+                    <span class="fw-semibold">@product.Price.ToByn()</span>
+                </div>
+                <div class="d-flex justify-content-between mt-2">
+                    <span class="text-muted">Остаток</span>
+                    <span class="fw-semibold">@product.Quantity шт.</span>
+                </div>
+            </div>
+
+            <form method="post">
+                <input type="hidden" name="id" value="@product.Id" />
+                <div class="d-flex flex-wrap gap-2">
+                    <button type="submit" class="btn btn-danger px-4">Удалить</button>
+                    <a class="btn btn-outline-secondary"
+                       asp-page="/Products/Details" asp-route-id="@product.Id">Отмена</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

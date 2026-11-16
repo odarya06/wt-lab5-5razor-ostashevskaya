@@ -1,0 +1,77 @@
+@page
+@model wt_lab5_5razor_ostashevskaya.Pages.Products.DetailsModel
+@{
+    ViewData["Title"] = Model.Product?.Name ?? "Товар";
+    var product = Model.Product!;
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a asp-page="/Index">Главная</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Products/Index">Товары</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@product.Name</li>
+    </ol>
+</nav>
+
+@if (TempData["Success"] is string success)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @success
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Закрыть"></button>
+    </div>
+}
+
+<div class="detail-card p-4 p-md-5">
+    <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-7">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <span class="category-icon" aria-hidden="true">@DisplayHelper.CategoryIcon(product.Category)</span>
+                <span class="badge rounded-pill @DisplayHelper.StatusBadgeClass(product)">
+                    @DisplayHelper.StatusText(product)
+                </span>
+                <span class="badge bg-light text-dark border">ID: @product.Id</span>
+            </div>
+            <h1 class="h3 fw-bold mb-2">@product.Name</h1>
+            <p class="text-muted mb-4">@product.Description</p>
+
+            <dl class="row mb-0">
+                <dt class="col-sm-4 text-muted fw-normal">Артикул</dt>
+                <dd class="col-sm-8 fw-semibold">@product.Sku</dd>
+
+                <dt class="col-sm-4 text-muted fw-normal">Категория</dt>
+                <dd class="col-sm-8">@product.Category</dd>
+
+                <dt class="col-sm-4 text-muted fw-normal">Поставщик</dt>
+                <dd class="col-sm-8">@product.Supplier</dd>
+
+                <dt class="col-sm-4 text-muted fw-normal">Дата поступления</dt>
+                <dd class="col-sm-8">@product.ReceivedAt.ToString("dd.MM.yyyy")</dd>
+
+                <dt class="col-sm-4 text-muted fw-normal">Доступен к продаже</dt>
+                <dd class="col-sm-8">@(product.IsAvailable ? "Да" : "Нет")</dd>
+            </dl>
+        </div>
+
+        <div class="col-12 col-lg-5">
+            <div class="bg-light rounded-4 p-4">
+                <div class="text-muted small text-uppercase mb-1">Цена за единицу</div>
+                <div class="display-6 fw-bold text-primary mb-3">@product.Price.ToByn()</div>
+
+                <div class="d-flex justify-content-between border-top pt-3">
+                    <span class="text-muted">Остаток</span>
+                    <span class="fw-semibold">@product.Quantity шт.</span>
+                </div>
+                <div class="d-flex justify-content-between border-top pt-3 mt-3">
+                    <span class="text-muted">Стоимость партии</span>
+                    <span class="fw-semibold">@product.TotalValue.ToByn()</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-primary" asp-page="/Products/Edit" asp-route-id="@product.Id">Изменить</a>
+        <a class="btn btn-outline-danger" asp-page="/Products/Delete" asp-route-id="@product.Id">Удалить</a>
+        <a class="btn btn-outline-secondary ms-auto" asp-page="/Products/Index">Назад к списку</a>
+    </div>
+</div>

@@ -1,0 +1,103 @@
+@page
+@model wt_lab5_5razor_ostashevskaya.Pages.Products.CreateModel
+@{
+    ViewData["Title"] = "Добавление товара";
+}
+
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a asp-page="/Index">Главная</a></li>
+        <li class="breadcrumb-item"><a asp-page="/Products/Index">Товары</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Добавление</li>
+    </ol>
+</nav>
+
+<div class="row justify-content-center">
+    <div class="col-12 col-lg-9 col-xl-8">
+        <div class="form-card p-4 p-md-5">
+            <h1 class="h3 fw-bold mb-1">Новый товар</h1>
+            <p class="text-muted mb-4">Заполните карточку товара и сохраните её в каталог.</p>
+
+            <form method="post" novalidate>
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="row g-3">
+                    <div class="col-12 col-md-8">
+                        <label asp-for="Product.Name" class="form-label fw-semibold"></label>
+                        <input asp-for="Product.Name" class="form-control" placeholder="Например, ноутбук Lenovo ThinkPad" />
+                        <span asp-validation-for="Product.Name" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label asp-for="Product.Sku" class="form-label fw-semibold"></label>
+                        <input asp-for="Product.Sku" class="form-control" placeholder="SKU-1001" />
+                        <span asp-validation-for="Product.Sku" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Product.Category" class="form-label fw-semibold"></label>
+                        <select asp-for="Product.Category" class="form-select">
+                            <option value="">— выберите категорию —</option>
+                            <option>Компьютеры</option>
+                            <option>Аксессуары</option>
+                            <option>Мебель</option>
+                            <option>Расходники</option>
+                            <option>Прочее</option>
+                        </select>
+                        <span asp-validation-for="Product.Category" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label asp-for="Product.Supplier" class="form-label fw-semibold"></label>
+                        <input asp-for="Product.Supplier" class="form-control" placeholder="ООО «Поставщик»" />
+                        <span asp-validation-for="Product.Supplier" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12 col-md-4">
+                        <label asp-for="Product.Quantity" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <input asp-for="Product.Quantity" class="form-control" type="number" min="0" step="1" />
+                            <span class="input-group-text">шт.</span>
+                        </div>
+                        <span asp-validation-for="Product.Quantity" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label asp-for="Product.Price" class="form-label fw-semibold"></label>
+                        <div class="input-group">
+                            <input asp-for="Product.Price" class="form-control" type="text"
+                                   inputmode="decimal" placeholder="0,00" />
+                            <span class="input-group-text">BYN</span>
+                        </div>
+                        <span asp-validation-for="Product.Price" class="text-danger small"></span>
+                    </div>
+                    <div class="col-12 col-md-4">
+                        <label asp-for="Product.ReceivedAt" class="form-label fw-semibold"></label>
+                        <input asp-for="Product.ReceivedAt" class="form-control" />
+                        <span asp-validation-for="Product.ReceivedAt" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Product.Description" class="form-label fw-semibold"></label>
+                        <textarea asp-for="Product.Description" class="form-control" rows="3"
+                                  placeholder="Краткое описание товара"></textarea>
+                        <span asp-validation-for="Product.Description" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input asp-for="Product.IsAvailable" class="form-check-input" />
+                            <label asp-for="Product.IsAvailable" class="form-check-label"></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-wrap gap-2 mt-4">
+                    <button type="submit" class="btn btn-primary px-4">Сохранить</button>
+                    <a class="btn btn-outline-secondary" asp-page="/Products/Index">Назад к списку</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

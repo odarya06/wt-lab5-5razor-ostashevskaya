@@ -1,0 +1,83 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Главная";
+}
+
+<section class="hero mb-4">
+    <span class="hero-kicker">ASP.NET Core · Razor Pages</span>
+    <h1 class="display-5 fw-bold mt-3 mb-3">Складской учёт</h1>
+    <p class="lead text-white-50 mb-0" style="max-width: 640px;">
+        Веб-приложение для учёта товаров на складе: каталог позиций, остатки,
+        поставщики и стоимость запасов в белорусских рублях.
+    </p>
+    <div class="d-flex flex-wrap gap-2 mt-4">
+        <a class="btn btn-warning btn-lg fw-semibold" asp-page="/Products/Index">
+            Перейти к товарам
+        </a>
+        <a class="btn btn-outline-light btn-lg" asp-page="/Products/Create">
+            Добавить товар
+        </a>
+    </div>
+</section>
+
+<section class="row g-3 mb-5">
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card p-4">
+            <div class="text-muted small text-uppercase">Позиций в каталоге</div>
+            <div class="stat-value">@Model.ProductCount</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card p-4">
+            <div class="text-muted small text-uppercase">Всего единиц</div>
+            <div class="stat-value">@Model.TotalQuantity</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card p-4">
+            <div class="text-muted small text-uppercase">Стоимость запасов</div>
+            <div class="stat-value">@Model.TotalValue.ToByn()</div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+        <div class="stat-card p-4">
+            <div class="text-muted small text-uppercase">Категорий</div>
+            <div class="stat-value">@Model.CategoryCount</div>
+        </div>
+    </div>
+</section>
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+    <div>
+        <h2 class="h4 fw-bold mb-1">Последние поступления</h2>
+        <p class="text-muted mb-0">Три позиции, поступившие на склад недавно</p>
+    </div>
+    <a class="btn btn-outline-primary" asp-page="/Products/Index">Все товары</a>
+</div>
+
+<div class="row g-4">
+    @foreach (var product in Model.LatestProducts)
+    {
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="product-card h-100 p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <span class="category-icon" aria-hidden="true">@DisplayHelper.CategoryIcon(product.Category)</span>
+                    <span class="badge rounded-pill @DisplayHelper.StatusBadgeClass(product)">
+                        @DisplayHelper.StatusText(product)
+                    </span>
+                </div>
+                <h3 class="h5 fw-semibold mb-1">@product.Name</h3>
+                <div class="small text-muted mb-3">
+                    <span class="me-2">@product.Category</span>
+                    <span>· @product.Supplier</span>
+                </div>
+                <div class="mt-auto d-flex justify-content-between align-items-center">
+                    <span class="price">@product.Price.ToByn()</span>
+                    <a class="btn btn-sm btn-outline-primary"
+                       asp-page="/Products/Details" asp-route-id="@product.Id">Подробнее</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
