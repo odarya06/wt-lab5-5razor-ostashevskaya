@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — Складской учёт</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    @{
+        var currentPage = ViewContext.RouteData.Values["page"]?.ToString();
+        string NavClass(string page) => currentPage == page ? "nav-link active fw-semibold" : "nav-link";
+    }
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark app-navbar sticky-top">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2" asp-page="/Index">
+                    <span class="brand-badge">📦</span>
+                    <span>Складской учёт</span>
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="Переключить навигацию">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav ms-auto gap-lg-2">
+                        <li class="nav-item">
+                            <a class="@NavClass("/Index")" asp-page="/Index">Главная</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("/Products/Index")" asp-page="/Products/Index">Товары</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="@NavClass("/Products/Create")" asp-page="/Products/Create">Добавить</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main role="main" class="container py-4 flex-grow-1">
+        @RenderBody()
+    </main>
+
+    <footer class="app-footer">
+        <div class="container d-flex flex-column flex-sm-row justify-content-between gap-2 py-3">
+            <span>© 2026 — WT-5. Razor Pages</span>
+            <span class="text-muted">Складской учёт · ASP.NET Core 8</span>
+        </div>
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
